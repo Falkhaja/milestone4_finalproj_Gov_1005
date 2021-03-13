@@ -14,11 +14,11 @@ library(tidyverse)
 
 ```{r readin_sample_tracking_data}
 # After inspecting the data, I realized I had to skip two rows.
-Sample_Game_1_RawTrackingData_Home_Team <- read_csv("sample-data/data/Sample_Game_1/Sample_Game_1_RawTrackingData_Home_Team.csv",
+Sample_Game_1_RawTrackingData_Home_Team <- read_csv("sample_data/data/Sample_Game_1/Sample_Game_1_RawTrackingData_Home_Team.csv",
           skip = 2,
           col_types = cols(.default = col_double()))
 
-Sample_Game_1_RawTrackingData_Away_Team <- read_csv("sample-data/data/Sample_Game_1/Sample_Game_1_RawTrackingData_Away_Team.csv",
+Sample_Game_1_RawTrackingData_Away_Team <- read_csv("sample_data/data/Sample_Game_1/Sample_Game_1_RawTrackingData_Away_Team.csv",
           skip = 2,
           col_types = cols(.default = col_double()))
 
