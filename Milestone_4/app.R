@@ -8,11 +8,11 @@
 #
 
 library(shiny)
-library(tidycensus)
 library(tidyverse)
 
+gather_RDS <-readRDS("gather.RDS")
 
-# Define UI for application that draws a histogram
+# Define UI for application that draws a barplot
 ui <- navbarPage(
     "Soccer Data Science Final Project",
     tabPanel("Discussion",
@@ -34,6 +34,20 @@ ui <- navbarPage(
                recorded in the Statsbomb events dataset. Wyscout also has some 
                interesting data that I could leverage if I'm going to end up 
                getting an API.")),
+    tabPanel("Manipulation", 
+             fluidPage(
+                 titlePanel("Game Events Bar Plot"),
+                 sidebarLayout(
+                     sidebarPanel(
+                         selectInput(
+                             "plot_type",
+                             "Pick Team",
+                             c("Home" = "Home", "Away" = "Away")
+                         )),
+                     mainPanel(plotOutput("events_plot")))),
+             p("The plot above shows the number of each type of event recorded 
+             for a soccer game between a Home and an Away Team."),
+             ),
     tabPanel("About", 
              titlePanel("About"),
              h3("Project Background and Motivations"),
@@ -51,10 +65,36 @@ ui <- navbarPage(
              h3("Repo URL"),
              p("https://github.com/Falkhaja/milestone4_finalproj_Gov_1005.git")))
 
-# Define server logic required to draw a histogram
+# Define server logic
 server <- function(input, output) {
-    # I don't think I need to insert anything here
+    output$events_plot <- renderPlot({
+        # Generate type based on input$plot_type from ui
+        
+        ifelse(
+            input$plot_type == "Home",
+            
+            # If input$plot_type is "Home", plot bar graph of home team events
+            
+            x   <- gather_RDS %>%
+                filter(Team == "Home") %>%
+                select(Type) %>% 
+                count(Type),
+            
+            # If input$plot_type is "Away", plot bar graph of away team events
+            
+            x   <- gather_RDS %>%
+                filter(Team == "Away") %>%
+                select(Type) %>% 
+                count(Type)
+        )
+        
+        # Draw the barplot with the specified number of bins
+        
+        barplot(height = pull(x), names.arg = x$Type, horiz = FALSE,
+                col = 'darkgray',
+                border = 'black',
+                main = "Team Event Data", cex.names = .85)
+    })
 }
-
 # Run the application 
 shinyApp(ui = ui, server = server)

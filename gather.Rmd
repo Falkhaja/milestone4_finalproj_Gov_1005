@@ -31,3 +31,30 @@ ball_data <- Sample_Game_1_RawTrackingData_Home_Team %>%
 
 ```
 
+```{r readin_raw_event_data}
+
+Sample_Game_1_RawEventsData <- read_csv("sample_data/data/Sample_Game_1/Sample_Game_1_RawEventsData.csv",
+          col_types = cols(Team = col_character(),
+                           Type = col_character(),
+                           Subtype = col_character(),
+                           Period = col_double(),
+                           `Start Frame` = col_double(),
+                           `Start Time [s]` = col_double(),
+                           `End Frame` = col_double(),
+                           `End Time [s]` = col_double(),
+                           From = col_character(),
+                           To = col_character(),
+                           `Start X` = col_double(),
+                           `Start Y` = col_double(),
+                           `End X` = col_double(),
+                           `End Y` = col_double() ))
+```
+
+```{r saveRDS}
+# Uncomment so we dont keep overwriting.
+
+# gather <- Sample_Game_1_RawEventsData
+
+# saveRDS(gather, "Milestone_4/gather.RDS")
+```
+
