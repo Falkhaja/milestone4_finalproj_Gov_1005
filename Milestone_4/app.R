@@ -93,7 +93,7 @@ server <- function(input, output) {
         barplot(height = pull(x), names.arg = x$Type, horiz = FALSE,
                 col = 'darkgray',
                 border = 'black',
-                main = "Team Event Data", cex.names = .85)
+                main = "Team Event Data", cex.names = .75)
     })
 }
 # Run the application 
