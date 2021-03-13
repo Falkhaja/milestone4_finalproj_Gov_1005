@@ -7,5 +7,27 @@ output: html_document
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = FALSE)
+library(StatsBombR)
+library(tidyverse)
+
+```
+
+```{r readin_sample_tracking_data}
+# After inspecting the data, I realized I had to skip two rows.
+Sample_Game_1_RawTrackingData_Home_Team <- read_csv("sample-data/data/Sample_Game_1/Sample_Game_1_RawTrackingData_Home_Team.csv",
+          skip = 2,
+          col_types = cols(.default = col_double()))
+
+Sample_Game_1_RawTrackingData_Away_Team <- read_csv("sample-data/data/Sample_Game_1/Sample_Game_1_RawTrackingData_Away_Team.csv",
+          skip = 2,
+          col_types = cols(.default = col_double()))
+
+```
+```{r get_ball_data}
+# The ball_data is included in both the home and away team tracking data
+# I simply had to select the final two rows of either the home or away team csv files
+ball_data <- Sample_Game_1_RawTrackingData_Home_Team %>%
+  select(Ball, X33)
+
 ```
 
