@@ -12,6 +12,11 @@ library(tidyverse)
 
 gather_RDS <-readRDS("gather.RDS")
 
+fit_1_RDS <-readRDS("fit_1.RDS")
+fit_2_RDS <-readRDS("fit_2.RDS")
+fit_3_RDS <-readRDS("fit_3.RDS")
+fit_4_RDS <-readRDS("fit_4.RDS")
+
 # Define UI for application that draws a barplot
 ui <- navbarPage(
     "Soccer Data Science Final Project",
@@ -48,6 +53,20 @@ ui <- navbarPage(
              p("The plot above shows the number of each type of event recorded 
              for a soccer game between a Home and an Away Team."),
              ),
+    tabPanel("Model", 
+             fluidPage(
+                 titlePanel("Fitting A Model to Data"),
+                 sidebarLayout(
+                     sidebarPanel(
+                         selectInput(
+                             "model_type",
+                             "Pick Type",
+                             c("Home" = "Home", "Away" = "Away")
+                         )),
+                     mainPanel(plotOutput("model_plot")))),
+             p("The plot above shows the number of each type of event recorded 
+             for a soccer game between a Home and an Away Team."),
+    ),
     tabPanel("About", 
              titlePanel("About"),
              h3("Project Background and Motivations"),
@@ -89,6 +108,35 @@ server <- function(input, output) {
         )
         
         # Draw the barplot with the specified number of bins
+        
+        barplot(height = pull(x), names.arg = x$Type, horiz = FALSE,
+                col = 'darkgray',
+                border = 'black',
+                main = "Team Event Data", cex.names = .75)
+    })
+
+    output$model_plot <- renderPlot({
+        # Generate type based on input$plot_type from ui
+        
+        ifelse(
+            input$model_type == "Home",
+            
+            # If input$plot_type is "Home", plot bar graph of home team events
+            
+            x   <- gather_RDS %>%
+                filter(Team == "Home") %>%
+                select(Type) %>% 
+                count(Type),
+            
+            # If input$plot_type is "Away", plot bar graph of away team events
+            
+            x   <- gather_RDS %>%
+                filter(Team == "Away") %>%
+                select(Type) %>% 
+                count(Type)
+        )
+        
+        # Draw the histogram for the specified model
         
         barplot(height = pull(x), names.arg = x$Type, horiz = FALSE,
                 col = 'darkgray',
